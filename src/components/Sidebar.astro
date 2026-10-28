@@ -1,0 +1,93 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE, yearMonth } from '../site';
+
+const posts = (await getCollection('posts')).sort((a, b) => +b.data.date - +a.data.date);
+const pages = await getCollection('pages');
+const imageOf = (permalink: string) => pages.find((p) => p.data.permalink === permalink)?.data.image;
+
+const popular = SITE.popular
+  .map((id) => posts.find((p) => p.data.wpId === id))
+  .filter((p) => p !== undefined);
+
+const categories = new Map<string, string>();
+const tags = new Map<string, string>();
+const months = new Map<string, string>();
+for (const { data } of posts) {
+  for (const c of data.categories) categories.set(c.slug, c.name);
+  for (const t of data.tags) tags.set(t.slug, t.name);
+  const { y, m } = yearMonth(data.date);
+  months.set(`/${y}/${m}/`, `${y}年${Number(m)}月`);
+}
+const byName = (a: [string, string], b: [string, string]) => a[1].localeCompare(b[1], 'ja');
+---
+
+<aside class="sidebar">
+  <section class="widget">
+    <h2>人気記事</h2>
+    <ul class="popular">
+      {
+        popular.map(({ data }) => (
+          <li>
+            <a href={encodeURI(data.permalink)}>
+              {data.image && <img src={data.image} alt="" loading="lazy" width="40" height="40" />}
+              <span>{data.title}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="widget">
+    <h2>著者リスト</h2>
+    <ul class="authors">
+      {
+        SITE.authors.map((a) => (
+          <li>
+            {imageOf(a.page) && (
+              <a href={encodeURI(a.page)} tabindex="-1" aria-hidden="true">
+                <img src={imageOf(a.page)} alt="" loading="lazy" width="56" height="56" />
+              </a>
+            )}
+            <div>
+              <a class="name" href={`https://twitter.com/${a.handle}`} target="_blank" rel="noopener">
+                {a.name} (@{a.handle})
+              </a>
+              <p>{a.bio}</p>
+              <a href={encodeURI(a.page)}>{a.more}</a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="widget">
+    <h2>SNSアカウント</h2>
+    <ul>
+      {SITE.social.map((s) => <li><a href={s.href} target="_blank" rel="noopener">{s.label}</a></li>)}
+    </ul>
+  </section>
+
+  <section class="widget">
+    <h2>カテゴリー</h2>
+    <ul>
+      {[...categories].sort(byName).map(([slug, name]) => <li><a href={encodeURI(`/category/${slug}/`)}>{name}</a></li>)}
+    </ul>
+  </section>
+
+  <section class="widget">
+    <h2>タグ</h2>
+    <p class="tag-cloud">
+      {[...tags].sort(byName).map(([slug, name]) => <a href={encodeURI(`/tag/${slug}/`)}>{name}</a>)}
+    </p>
+  </section>
+
+  <section class="widget">
+    <h2>アーカイブ</h2>
+    <ul>
+      {[...months].map(([href, label]) => <li><a href={href}>{label}</a></li>)}
+    </ul>
+  </section>
+</aside>

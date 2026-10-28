@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate } from '../site';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+}
+const { posts } = Astro.props;
+---
+
+<div class="post-list">
+  {
+    posts.map(({ data }) => (
+      <article>
+        {data.image && (
+          <a class="thumb" href={encodeURI(data.permalink)} tabindex="-1" aria-hidden="true">
+            <img src={data.image} alt="" loading="lazy" />
+          </a>
+        )}
+        <div class="body">
+          <p class="cats">
+            {data.categories.map((c) => (
+              <a href={encodeURI(`/category/${c.slug}/`)}>{c.name}</a>
+            ))}
+          </p>
+          <h2><a href={encodeURI(data.permalink)}>{data.title}</a></h2>
+          <p class="excerpt">{data.excerpt}</p>
+          <p class="date">
+            <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+          </p>
+        </div>
+      </article>
+    ))
+  }
+</div>

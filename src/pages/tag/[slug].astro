@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('posts')).sort((a, b) => +b.data.date - +a.data.date);
+  const bySlug = new Map<string, { name: string; posts: typeof posts }>();
+  for (const p of posts) {
+    for (const t of p.data.tags) {
+      if (!bySlug.has(t.slug)) bySlug.set(t.slug, { name: t.name, posts: [] });
+      bySlug.get(t.slug)!.posts.push(p);
+    }
+  }
+  return [...bySlug].map(([slug, v]) => ({ params: { slug }, props: v }));
+}
+
+const { name, posts } = Astro.props;
+---
+
+<Base title={`#${name}`}>
+  <h1 class="page-title">タグ: #{name}</h1>
+  <PostList posts={posts} />
+</Base>

@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PostList from '../../../components/PostList.astro';
+import { yearMonth } from '../../../site';
+
+// Monthly archives at the WordPress URLs, e.g. /2022/06/.
+export async function getStaticPaths() {
+  const posts = (await getCollection('posts')).sort((a, b) => +b.data.date - +a.data.date);
+  const byMonth = new Map<string, typeof posts>();
+  for (const p of posts) {
+    const { y, m } = yearMonth(p.data.date);
+    const key = `${y}/${m}`;
+    if (!byMonth.has(key)) byMonth.set(key, []);
+    byMonth.get(key)!.push(p);
+  }
+  return [...byMonth].map(([key, posts]) => {
+    const [year, month] = key.split('/');
+    return { params: { year, month }, props: { posts } };
+  });
+}
+
+const { year, month } = Astro.params;
+const { posts } = Astro.props;
+const label = `${year}年${Number(month)}月`;
+---
+
+<Base title={label}>
+  <h1 class="page-title">月: {label}</h1>
+  <PostList posts={posts} />
+</Base>

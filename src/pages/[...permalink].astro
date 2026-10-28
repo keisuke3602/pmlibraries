@@ -1,0 +1,73 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { formatDate } from '../site';
+
+// Posts and pages keep their WordPress URLs, so existing links and search results still work.
+export async function getStaticPaths() {
+  const strip = (p: string) => p.replace(/^\/|\/$/g, '');
+  const posts = await getCollection('posts');
+  const pages = await getCollection('pages');
+  return [
+    ...posts.map((entry) => ({ params: { permalink: strip(entry.data.permalink) }, props: { entry } })),
+    ...pages.map((entry) => ({ params: { permalink: strip(entry.data.permalink) }, props: { entry } })),
+  ];
+}
+
+const { entry } = Astro.props as { entry: CollectionEntry<'posts'> | CollectionEntry<'pages'> };
+const { Content } = await render(entry);
+const post = entry.collection === 'posts' ? (entry as CollectionEntry<'posts'>).data : undefined;
+---
+
+<Base
+  title={entry.data.title}
+  description={post?.excerpt || undefined}
+  image={entry.data.image}
+>
+  <article class="entry">
+    <header>
+      {
+        post && (
+          <p class="cats">
+            {post.categories.map((c) => (
+              <a href={encodeURI(`/category/${c.slug}/`)}>{c.name}</a>
+            ))}
+          </p>
+        )
+      }
+      <h1>{entry.data.title}</h1>
+      {
+        post && (
+          <p class="date">
+            <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+          </p>
+        )
+      }
+    </header>
+    {post && entry.data.image && <img class="hero" src={entry.data.image} alt="" />}
+    <div class="prose">
+      <Content />
+    </div>
+    {
+      post && post.tags.length > 0 && (
+        <p class="tags">{post.tags.map((t) => <a href={encodeURI(`/tag/${t.slug}/`)}>#{t.name}</a>)}</p>
+      )
+    }
+    {
+      post && post.comments.length > 0 && (
+        <section class="comments">
+          <h2>コメント（{post.comments.length}）</h2>
+          <p class="note">WordPress時代にいただいたコメントです。新しいコメントの受付は終了しました。</p>
+          {post.comments.map((c) => (
+            <div class="comment">
+              <p class="meta">
+                <strong>{c.author}</strong> <time>{formatDate(c.date)}</time>
+              </p>
+              <p set:text={c.body} />
+            </div>
+          ))}
+        </section>
+      )
+    }
+  </article>
+</Base>

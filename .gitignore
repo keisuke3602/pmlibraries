@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+
+# Pre-existing local images, not part of the site
+/PM_*.jpeg
+/PM_*.png
+/ManagingPM_*
