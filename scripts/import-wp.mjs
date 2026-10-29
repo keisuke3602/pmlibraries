@@ -41,6 +41,13 @@ function localizeUrl(url, currentPath) {
   return encodeURI(p) + hash;
 }
 
+// Images redrawn after the move, in place of the low-resolution originals.
+const imageOverrides = {
+  '/wp-content/uploads/2021/12/productmanager.png': '/images/pm-roles-and-skills/business-tech-ux.jpeg',
+  '/wp-content/uploads/2021/12/productmangementtriangle-1.png': '/images/pm-roles-and-skills/product-management-triangle.png',
+  '/wp-content/uploads/2021/12/productmanagercareerpaths.png': '/images/pm-roles-and-skills/career-paths.png',
+};
+
 function safeDecode(s) {
   try { return decodeURIComponent(s); } catch { return s; }
 }
@@ -114,8 +121,9 @@ function makeTurndown(currentPath, tocAnchors = new Map()) {
   td.addRule('image', {
     filter: 'img',
     replacement: (_c, n) => {
-      const src = localizeUrl(n.getAttribute('src') || '', currentPath);
+      let src = localizeUrl(n.getAttribute('src') || '', currentPath);
       if (!src) return '';
+      src = imageOverrides[src] ?? src;
       const alt = (n.getAttribute('alt') || '').replace(/[\[\]]/g, '');
       return `![${alt}](${src})`;
     },
