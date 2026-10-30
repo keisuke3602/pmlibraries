@@ -23,6 +23,16 @@ const byName = (a: [string, string], b: [string, string]) => a[1].localeCompare(
 ---
 
 <aside class="sidebar">
+  {
+    SITE.subscribeForm && (
+      <section class="widget">
+        <h2>メールで購読</h2>
+        <p>新しい翻訳記事を公開したときに、メールでお知らせします。</p>
+        <a class="subscribe" href={SITE.subscribeForm} target="_blank" rel="noopener">購読する</a>
+      </section>
+    )
+  }
+
   <section class="widget">
     <h2>人気記事</h2>
     <ul class="popular">
