@@ -1,5 +1,5 @@
 // Converts the WordPress.com export in wp-export/*.json into Markdown files
-// under src/content/. Re-runnable: output directories are regenerated.
+// under src/content/. Re-runnable: the WordPress-generated files are regenerated.
 import fs from 'node:fs';
 import path from 'node:path';
 import TurndownService from 'turndown';
@@ -186,9 +186,12 @@ function write(dir, file, fm, body) {
 
 const postsDir = path.join(root, 'src/content/posts');
 const pagesDir = path.join(root, 'src/content/pages');
+// Only files generated from WordPress (they carry a wpId) are replaced; posts written here are kept.
 for (const d of [postsDir, pagesDir]) {
-  fs.rmSync(d, { recursive: true, force: true });
   fs.mkdirSync(d, { recursive: true });
+  for (const f of fs.readdirSync(d)) {
+    if (/^wpId: /m.test(fs.readFileSync(path.join(d, f), 'utf8'))) fs.rmSync(path.join(d, f));
+  }
 }
 
 const commentsByPost = {};
