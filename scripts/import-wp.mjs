@@ -186,11 +186,15 @@ function write(dir, file, fm, body) {
 
 const postsDir = path.join(root, 'src/content/posts');
 const pagesDir = path.join(root, 'src/content/pages');
-// Only files generated from WordPress (they carry a wpId) are replaced; posts written here are kept.
+// Only files generated from WordPress (they carry a wpId) are replaced; posts written here are kept,
+// and a page written here takes over its WordPress counterpart with the same permalink.
+const handWritten = new Set();
 for (const d of [postsDir, pagesDir]) {
   fs.mkdirSync(d, { recursive: true });
   for (const f of fs.readdirSync(d)) {
-    if (/^wpId: /m.test(fs.readFileSync(path.join(d, f), 'utf8'))) fs.rmSync(path.join(d, f));
+    const text = fs.readFileSync(path.join(d, f), 'utf8');
+    if (/^wpId: /m.test(text)) fs.rmSync(path.join(d, f));
+    else handWritten.add(JSON.parse(text.match(/^permalink: (.+)$/m)?.[1] ?? 'null'));
   }
 }
 
@@ -225,7 +229,7 @@ for (const p of posts) {
 const contactNote = `お問い合わせ・翻訳リクエストは、[X](https://twitter.com/PMLibraries)、[Facebook](https://www.facebook.com/pmlibraries)、[LinkedIn](https://www.linkedin.com/company/pm-library/) からお気軽にご連絡ください。\n\n`;
 for (const p of pages) {
   const permalink = permalinkOf(p);
-  if (permalink === '/') continue;
+  if (permalink === '/' || handWritten.has(permalink)) continue;
   let body = toMarkdown(p.content, permalink);
   if (p.content.includes('wp-block-jetpack-contact-form')) body = contactNote + body;
   write(pagesDir, `${p.ID}.md`, {

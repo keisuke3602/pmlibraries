@@ -3,7 +3,6 @@ title: "Brandon Chu"
 date: "2022-06-05T22:39:43-07:00"
 permalink: "/brandon-chu/"
 image: "/wp-content/uploads/2022/06/1517066694570.jpeg"
-wpId: 941
 ---
 
 Brandon Chuは、Shopifyのプロダクトおよびプラットフォーム担当副社長で、彼のチームは、開発者ツール、API、マーケットプレイス、B2Bネットワーク機能を提供することにより、世界中の開発者とパートナーがアプリを作ることを可能にしています。
@@ -14,10 +13,24 @@ Shopify以前は、FreshBooksのプロダクトマネジメントディレクタ
 
 ツイッター: <a href="https://twitter.com/BrandonMChu" target="_blank" rel="noopener">Brandon Chu(@BrandonMChu)</a>
 
-![](/wp-content/uploads/2022/05/screen-shot-2022-05-15-at-1.05.43-am.png)
+## 翻訳記事
 
-<a href="/2022/05/15/%E3%83%97%E3%83%AD%E3%83%80%E3%82%AF%E3%83%88%E3%83%9E%E3%83%8D%E3%82%B8%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AE%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9/" target="_blank" rel="noopener">プロダクトマネジメントのブラックボックス</a>
+![](/images/managing-and-developing-pms/investor-entrepreneur-model.webp)
+
+[プロダクトマネージャーのマネジメントと育成](/2026/10/29/プロダクトマネージャーのマネジメントと育成/)
+
+![](/wp-content/uploads/2023/09/ruthless1.gif)
+
+[冷酷な優先順位付け](/2023/09/03/冷酷な優先順位付け/)
+
+![](/wp-content/uploads/2022/06/timevalue1.png)
+
+[プロダクトの出荷の時間価値](/2022/06/28/プロダクトの出荷の時間価値/)
 
 ![](/wp-content/uploads/2022/06/1_curt3negca6ablkwknpigq.png)
 
-<a href="/2022/06/05/mvpm-%E6%9C%80%E4%BD%8E%E9%99%90%E5%AE%9F%E8%A1%8C%E5%8F%AF%E8%83%BD%E3%81%AA%E3%83%97%E3%83%AD%E3%83%80%E3%82%AF%E3%83%88%E3%83%9E%E3%83%8D%E3%83%BC%E3%82%B8%E3%83%A3%E3%83%BC/" target="_blank" rel="noopener">MVPM: 最低限実行可能なプロダクトマネージャー</a>
+[MVPM: 有用なプロダクトマネージャーになるためにフォーカスしてはならないこと](/2022/06/05/mvpm-最低限実行可能なプロダクトマネージャー/)
+
+![](/wp-content/uploads/2022/05/screen-shot-2022-05-15-at-1.05.43-am.png)
+
+[プロダクトマネジメントのブラックボックス](/2022/05/15/プロダクトマネジメントのブラックボックス/)
