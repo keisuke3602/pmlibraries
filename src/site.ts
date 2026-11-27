@@ -17,6 +17,8 @@ export const SITE = {
     { label: 'Facebook', href: 'https://www.facebook.com/pmlibraries/' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/pm-library' },
   ],
+  // GA4 property "PM Library" in the pmlibraries@gmail.com account; only production builds send data.
+  analyticsId: 'G-DGMK94M01B',
   // Google Form whose answers land in the subscriber Sheet the GAS mailer reads.
   subscribeForm: 'https://docs.google.com/forms/d/e/1FAIpQLSewn_x2TpsUUtiKyRuk6C0avK-kyBd3QBVl6flQhDo8mblmWA/viewform',
   // The WordPress "人気記事" widget, by wpId.

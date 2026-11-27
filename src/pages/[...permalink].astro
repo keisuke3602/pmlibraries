@@ -1,7 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { formatDate, summarize } from '../site';
+import { SITE, formatDate, summarize } from '../site';
 
 // Posts and pages keep their WordPress URLs, so existing links and search results still work.
 export async function getStaticPaths() {
@@ -51,6 +51,14 @@ const post = entry.collection === 'posts' ? (entry as CollectionEntry<'posts'>).
     {
       post && post.tags.length > 0 && (
         <p class="tags">{post.tags.map((t) => <a href={encodeURI(`/tag/${t.slug}/`)}>#{t.name}</a>)}</p>
+      )
+    }
+    {
+      post && SITE.subscribeForm && (
+        <aside class="subscribe-box">
+          <p>新しい翻訳記事を公開したときに、メールでお知らせします。</p>
+          <a class="subscribe" href={SITE.subscribeForm} target="_blank" rel="noopener">メールで購読する</a>
+        </aside>
       )
     }
     {

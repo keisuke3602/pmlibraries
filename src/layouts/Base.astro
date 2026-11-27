@@ -38,6 +38,19 @@ const current = decodeURI(Astro.url.pathname);
     {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:site" content="@PMLibraries" />
+    {
+      import.meta.env.PROD && (
+        <Fragment>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.analyticsId}`} />
+          <script is:inline define:vars={{ id: SITE.analyticsId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', id);
+          </script>
+        </Fragment>
+      )
+    }
   </head>
   <body>
     <div class="site">
