@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PostList from '../../components/PostList.astro';
+import { listDescription } from '../../site';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('posts')).sort((a, b) => +b.data.date - +a.data.date);
@@ -18,7 +19,7 @@ export async function getStaticPaths() {
 const { name, posts } = Astro.props;
 ---
 
-<Base title={name}>
+<Base title={`${name}の記事一覧`} description={listDescription(name, posts)}>
   <h1 class="page-title">カテゴリー: {name}</h1>
   <PostList posts={posts} />
 </Base>

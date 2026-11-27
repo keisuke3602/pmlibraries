@@ -32,3 +32,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Tell Bing and other IndexNow engines about every URL in the sitemap, so new posts are crawled soon.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    env:
+      KEY: 82ec1fc529cc92a318e91731e5a59ef4
+    steps:
+      - run: |
+          curl -sf https://pmlibraries.com/sitemap-0.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' \
+            | jq -R . | jq -s --arg key "$KEY" \
+              '{host: "pmlibraries.com", key: $key, keyLocation: "https://pmlibraries.com/\($key).txt", urlList: .}' \
+            | curl -s -w 'IndexNow: HTTP %{http_code}\n' -H 'Content-Type: application/json; charset=utf-8' \
+              -d @- https://api.indexnow.org/indexnow

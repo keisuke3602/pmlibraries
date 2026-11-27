@@ -1,7 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { formatDate } from '../site';
+import { formatDate, summarize } from '../site';
 
 // Posts and pages keep their WordPress URLs, so existing links and search results still work.
 export async function getStaticPaths() {
@@ -21,7 +21,7 @@ const post = entry.collection === 'posts' ? (entry as CollectionEntry<'posts'>).
 
 <Base
   title={entry.data.title}
-  description={post?.excerpt || undefined}
+  description={post?.excerpt || summarize(entry.body ?? '') || undefined}
   image={entry.data.image}
 >
   <article class="entry">

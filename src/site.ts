@@ -60,7 +60,26 @@ export const SITE = {
   ],
 };
 
-export const formatDate = (d: Date) =>
+// List pages name what they hold, so search engines don't see the site description on every one.
+export const listDescription = (label: string, posts: { data: { title: string } }[]) => {
+  const text = `${label}の翻訳記事一覧（${posts.length}本）：${posts.map((p) => p.data.title).join('、')}`;
+  return text.length > 160 ? text.slice(0, 159) + '…' : text;
+};
+
+// First words of a Markdown body, for pages that have no excerpt.
+export const summarize = (markdown: string) => {
+  const text = markdown
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/<[^>]+>/g, '')
+    .replace(/^[#>\-*\s]+/gm, '')
+    .replace(/[*_`\\]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.length > 160 ? text.slice(0, 159) + '…' : text;
+};
+
+export const formatDate =(d: Date) =>
   d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Los_Angeles' });
 
 // WordPress dates are Pacific time; archive URLs follow them.

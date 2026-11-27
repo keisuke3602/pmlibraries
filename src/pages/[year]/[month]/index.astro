@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import PostList from '../../../components/PostList.astro';
-import { yearMonth } from '../../../site';
+import { listDescription, yearMonth } from '../../../site';
 
 // Monthly archives at the WordPress URLs, e.g. /2022/06/.
 export async function getStaticPaths() {
@@ -25,7 +25,7 @@ const { posts } = Astro.props;
 const label = `${year}年${Number(month)}月`;
 ---
 
-<Base title={label}>
+<Base title={`${label}の記事一覧`} description={listDescription(`${label}公開`, posts)}>
   <h1 class="page-title">月: {label}</h1>
   <PostList posts={posts} />
 </Base>

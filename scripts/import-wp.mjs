@@ -212,7 +212,7 @@ for (const p of posts) {
   const permalink = permalinkOf(p);
   const cats = Object.values(p.categories).map((c) => ({ name: entity(c.name), slug: safeDecode(c.slug) }));
   write(postsDir, `${p.date.slice(0, 10)}-${p.ID}.md`, {
-    title: entity(p.title),
+    title: entity(p.title).replace(/￼/g, '').trim(),
     date: p.date,
     modified: p.modified,
     permalink,
