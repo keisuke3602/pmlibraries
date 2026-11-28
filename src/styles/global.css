@@ -122,4 +122,5 @@ img { max-width: 100%; height: auto; }
 /* Footer */
 .site-footer { max-width: 1320px; margin: 0 auto; padding: 24px 7.6923% 40px; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 0.82rem; color: var(--muted); }
 .site-footer a { color: var(--muted); }
+.site-footer .disclosure { flex-basis: 100%; margin: 0; }
 @media (max-width: 560px) { .site-footer { padding: 24px 16px; } }

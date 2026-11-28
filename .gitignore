@@ -7,3 +7,6 @@ dist/
 /PM_*.jpeg
 /PM_*.png
 /ManagingPM_*
+
+# WordPress.com stats exports, kept locally only
+/*.csv
